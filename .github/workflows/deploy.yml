@@ -20,18 +20,13 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0  # Fetch all history for all branches and tags
+      uses: actions/checkout@v4  # Updated from v3 to v4
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5  # Updated from v4 to v5
       with:
         python-version: '3.10'
         cache: 'pip'
@@ -56,8 +51,8 @@ jobs:
         cd build
         pygbag --build --title "Mimicraft2D" --app_name mimicraft --can_close true main.py
 
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v2  # Updated from v1 to v2
       with:
         path: build/web/
 
@@ -72,4 +67,4 @@ jobs:
     steps:
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v3  # Updated from v2 to v3
