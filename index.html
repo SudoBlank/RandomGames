@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mimicraft2D - A Python-Powered Minecraft Clone</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            flex-direction: column;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin: 20px auto;
+            display: block;
+        }
+        .loading {
+            margin: 20px;
+            font-size: 18px;
+        }
+        .progress-bar {
+            width: 300px;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        h1 {
+            color: #8f94fb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .button {
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mimicraft2D</h1>
+        <p>A Python-powered Minecraft-inspired game that runs in your browser!</p>
+        
+        <div class="instructions">
+            <h3>Controls:</h3>
+            <p>WASD: Move | Space: Jump | E: Inventory | Mouse: Break/Place blocks</p>
+            <p>1-0: Select hotbar slots | R: Place block (alternative)</p>
+        </div>
+        
+        <button class="button" onclick="startGame()">Start Game</button>
+        
+        <div id="gameContainer" style="display: none;">
+            <div class="loading">Loading game assets...</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <canvas id="canvas"></canvas>
+        </div>
+        
+        <div class="footer">
+            <p>Powered by Pygame and Pygbag | Hosted on GitHub Pages</p>
+        </div>
+    </div>
+
+    <script>
+        function startGame() {
+            document.getElementById('gameContainer').style.display = 'block';
+            document.querySelector('.button').style.display = 'none';
+            
+            // Simple loading progress simulation
+            let progress = 0;
+            const progressBar = document.getElementById('progress');
+            const loadingText = document.querySelector('.loading');
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    loadingText.textContent = "Game loaded! Starting...";
+                    
+                    // Load the game after a short delay
+                    setTimeout(loadGame, 1000);
+                }
+                progressBar.style.width = progress + '%';
+            }, 200);
+        }
+        
+        function loadGame() {
+            // Create and append the pygbag script
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = 'https://pygame-web.github.io/archives/0.9/pygbag.js';
+            document.head.appendChild(script);
+            
+            // Hide loading elements when game starts
+            setTimeout(() => {
+                document.querySelector('.loading').style.display = 'none';
+                document.querySelector('.progress-bar').style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
